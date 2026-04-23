@@ -1,0 +1,84 @@
+<Window x:Class="JeffView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="JeffView - PDF Viewer &amp; Converter" Height="800" Width="1100">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Menu -->
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Padding="5" Background="{DynamicResource MaterialDesignDarkBackground}">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="Open_Click"/>
+                <MenuItem Header="_Save As..." Click="SaveAs_Click"/>
+                <Separator/>
+                <MenuItem Header="_Convert to Image..." Click="Convert_Click"/>
+                <Separator/>
+                <MenuItem Header="_Exit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Sidebar: Dataset Library -->
+        <materialDesign:Card Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Margin="10,10,5,10" materialDesign:ElevationAssist.Elevation="Dp4">
+            <StackPanel Margin="15">
+                <TextBlock Text="Justice.gov Library" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,15"/>
+                
+                <TextBlock Text="Select Dataset:" Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                <ComboBox x:Name="DatasetComboBox" Margin="0,5,0,20" SelectionChanged="DatasetComboBox_SelectionChanged" Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                    <!-- Populated in code-behind -->
+                </ComboBox>
+
+                <TextBlock Text="Document ID (EFTA):" Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                <TextBox x:Name="RemoteIdBox" Margin="0,5,0,5" Text="00000001" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBlock x:Name="RangeLabel" Text="Range: 00000001 - 00003158" FontSize="11" Foreground="{DynamicResource MaterialDesignSecondaryText}" Margin="0,0,0,25"/>
+                
+                <Button Content="Verify Age (Required)" Click="VerifyAge_Click" Margin="0,0,0,15" Style="{StaticResource MaterialDesignOutlinedButton}" Foreground="#ff6b6b" BorderBrush="#ff6b6b"/>
+                <Button Content="Load Remote PDF" Click="LoadRemote_Click" Margin="0,0,0,15" Style="{StaticResource MaterialDesignRaisedButton}"/>
+                
+                <ProgressBar x:Name="DownloadProgress" Height="20" Width="20" Margin="0,20,0,10" Visibility="Collapsed" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True"/>
+                <TextBlock x:Name="DownloadStatus" Text="" FontSize="12" TextAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource MaterialDesignSecondaryText}"/>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Navigation Toolbar -->
+        <ToolBarTray Grid.Row="1" Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}" Margin="5,10,10,0">
+            <ToolBar Style="{StaticResource MaterialDesignToolBar}" ClipToBounds="False">
+                <Button Content="Prev Doc" Click="PrevDoc_Click" Margin="5" Style="{StaticResource MaterialDesignFlatButton}"/>
+                <Separator/>
+                <Button Content="Next Doc" Click="NextDoc_Click" Margin="5" Style="{StaticResource MaterialDesignFlatButton}"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Main Viewport (Browser-based for session persistence) -->
+        <materialDesign:Card Grid.Row="2" Grid.Column="1" Margin="5,5,10,10" materialDesign:ElevationAssist.Elevation="Dp2">
+            <wv2:WebView2 x:Name="mainWebView"/>
+        </materialDesign:Card>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2" Background="{DynamicResource MaterialDesignDarkBackground}">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusLabel" Text="Ready"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

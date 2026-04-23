@@ -1,0 +1,19 @@
+<Window x:Class="JeffView.VerificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="Justice.gov Age Verification" Height="600" Width="800" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <wv2:WebView2 x:Name="webView" Source="https://www.justice.gov/epstein"/>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <TextBlock Text="Once you have clicked 'Yes' on the website, click Done here ->" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="Gray"/>
+            <Button Content="Done / Verification Complete" Click="Done_Click" Padding="10,5"/>
+        </StackPanel>
+    </Grid>
+</Window>
